@@ -1,1 +1,482 @@
+USE [master]
+GO
+/****** Object:  Database [PRJ301Final_Test]    Script Date: 21-Mar-22 22:53:09 ******/
+CREATE DATABASE [PRJ301Final_Test]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'PRJ301Final', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\PRJ301Final.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'PRJ301Final_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\PRJ301Final_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [PRJ301Final_Test].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [PRJ301Final_Test] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET RECOVERY FULL 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET  MULTI_USER 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [PRJ301Final_Test] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [PRJ301Final_Test] SET QUERY_STORE = OFF
+GO
+USE [PRJ301Final_Test]
+GO
+/****** Object:  Table [dbo].[Account]    Script Date: 21-Mar-22 22:53:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Account](
+	[accountid] [varchar](200) NOT NULL,
+	[username] [varchar](100) NOT NULL,
+	[fullname] [nvarchar](200) NULL,
+	[email] [nvarchar](230) NOT NULL,
+	[gender] [bit] NULL,
+	[password] [nvarchar](100) NOT NULL,
+	[enabled] [bit] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[accountid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Course]    Script Date: 21-Mar-22 22:53:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Course](
+	[courseid] [int] IDENTITY(1,1) NOT NULL,
+	[title] [nvarchar](200) NOT NULL,
+	[description] [nvarchar](200) NOT NULL,
+	[visibleto] [bit] NOT NULL,
+	[accountid] [nvarchar](200) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[courseid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[KeySearch]    Script Date: 21-Mar-22 22:53:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[KeySearch](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[KeyWord] [nvarchar](200) NOT NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Progress]    Script Date: 21-Mar-22 22:53:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Progress](
+	[progressid] [int] NOT NULL,
+	[notstudied] [bit] NOT NULL,
+	[stilllearning] [bit] NOT NULL,
+	[mastered] [bit] NOT NULL,
+	[questionid] [int] NOT NULL,
+ CONSTRAINT [PK_Progress] PRIMARY KEY CLUSTERED 
+(
+	[progressid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProgressAccount]    Script Date: 21-Mar-22 22:53:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProgressAccount](
+	[progressid] [int] NOT NULL,
+	[accountid] [nvarchar](200) NOT NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Question]    Script Date: 21-Mar-22 22:53:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Question](
+	[questionid] [int] IDENTITY(1,1) NOT NULL,
+	[image] [nvarchar](100) NULL,
+	[term] [nvarchar](1000) NOT NULL,
+	[definition] [nvarchar](1000) NOT NULL,
+	[courseid] [int] NOT NULL,
+ CONSTRAINT [PK__Question__62C2216A664B7D96] PRIMARY KEY CLUSTERED 
+(
+	[questionid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[VerifyToken]    Script Date: 21-Mar-22 22:53:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[VerifyToken](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Email] [varchar](230) NOT NULL,
+	[Token] [varchar](230) NOT NULL,
+	[Create_Time] [datetime] NOT NULL
+) ON [PRIMARY]
+GO
+INSERT [dbo].[Account] ([accountid], [username], [fullname], [email], [gender], [password], [enabled]) VALUES (N'abc', N'admin', NULL, N'admin1111111111@gmail.com', NULL, N'55de1e4b50da90d84249ab53f61a99a6959d4c6fd8a6c402670b4115c137beae', 1)
+INSERT [dbo].[Account] ([accountid], [username], [fullname], [email], [gender], [password], [enabled]) VALUES (N'C138B77A403D41259A8F8DB9C936A516', N'mod1', NULL, N'asuyami0nagi@gmail.com', NULL, N'55de1e4b50da90d84249ab53f61a99a6959d4c6fd8a6c402670b4115c137beae', 1)
+INSERT [dbo].[Account] ([accountid], [username], [fullname], [email], [gender], [password], [enabled]) VALUES (N'def', N'admin2', NULL, N'admin2222222222@gmail.com', NULL, N'55de1e4b50da90d84249ab53f61a99a6959d4c6fd8a6c402670b4115c137beae', 1)
+INSERT [dbo].[Account] ([accountid], [username], [fullname], [email], [gender], [password], [enabled]) VALUES (N'F638097BAD8D4B1993D58940EEEF7CDC', N'mod2', NULL, N'bearerjb@gmail.com', NULL, N'55de1e4b50da90d84249ab53f61a99a6959d4c6fd8a6c402670b4115c137beae', 1)
+SET IDENTITY_INSERT [dbo].[Course] ON 
+
+INSERT [dbo].[Course] ([courseid], [title], [description], [visibleto], [accountid]) VALUES (1, N'Tieng anh', N'tu moi tieng anh', 0, N'abc')
+INSERT [dbo].[Course] ([courseid], [title], [description], [visibleto], [accountid]) VALUES (2, N'English New Word', N'english to vienamese new word', 0, N'def')
+INSERT [dbo].[Course] ([courseid], [title], [description], [visibleto], [accountid]) VALUES (8, N'Number', N'111', 0, N'C138B77A403D41259A8F8DB9C936A516')
+INSERT [dbo].[Course] ([courseid], [title], [description], [visibleto], [accountid]) VALUES (9, N'111 update 2', N'111', 1, N'C138B77A403D41259A8F8DB9C936A516')
+INSERT [dbo].[Course] ([courseid], [title], [description], [visibleto], [accountid]) VALUES (10, N'1111 update', N'1111', 1, N'C138B77A403D41259A8F8DB9C936A516')
+INSERT [dbo].[Course] ([courseid], [title], [description], [visibleto], [accountid]) VALUES (11, N'number1', N'tap dem', 0, N'C138B77A403D41259A8F8DB9C936A516')
+INSERT [dbo].[Course] ([courseid], [title], [description], [visibleto], [accountid]) VALUES (12, N'number 2', N'tap dem 2', 0, N'C138B77A403D41259A8F8DB9C936A516')
+INSERT [dbo].[Course] ([courseid], [title], [description], [visibleto], [accountid]) VALUES (13, N'Number 3', N'tap dem', 0, N'C138B77A403D41259A8F8DB9C936A516')
+INSERT [dbo].[Course] ([courseid], [title], [description], [visibleto], [accountid]) VALUES (14, N'number 4', N'tap dem', 0, N'C138B77A403D41259A8F8DB9C936A516')
+INSERT [dbo].[Course] ([courseid], [title], [description], [visibleto], [accountid]) VALUES (15, N'Dem Dem Dem', N'tap dem', 0, N'C138B77A403D41259A8F8DB9C936A516')
+SET IDENTITY_INSERT [dbo].[Course] OFF
+SET IDENTITY_INSERT [dbo].[KeySearch] ON 
+
+INSERT [dbo].[KeySearch] ([ID], [KeyWord]) VALUES (1, N'prj301')
+INSERT [dbo].[KeySearch] ([ID], [KeyWord]) VALUES (2, N'prf321')
+INSERT [dbo].[KeySearch] ([ID], [KeyWord]) VALUES (3, N'dbi201')
+INSERT [dbo].[KeySearch] ([ID], [KeyWord]) VALUES (4, N'mae101')
+INSERT [dbo].[KeySearch] ([ID], [KeyWord]) VALUES (5, N'IOT101')
+INSERT [dbo].[KeySearch] ([ID], [KeyWord]) VALUES (6, N'tieng anh')
+INSERT [dbo].[KeySearch] ([ID], [KeyWord]) VALUES (7, N'ieng')
+INSERT [dbo].[KeySearch] ([ID], [KeyWord]) VALUES (8, N'n')
+INSERT [dbo].[KeySearch] ([ID], [KeyWord]) VALUES (9, N'101')
+INSERT [dbo].[KeySearch] ([ID], [KeyWord]) VALUES (10, N'mod')
+SET IDENTITY_INSERT [dbo].[KeySearch] OFF
+SET IDENTITY_INSERT [dbo].[Question] ON 
+
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (1, NULL, N'insect', N'n. /''insekt/ sâu bọ, côn trùng', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (2, NULL, N'insurance', N'n. /in''ʃuərəns/ sự bảo hiểm', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (3, NULL, N'annual', N'adj. /''ænjuəl/ hàng năm, từng năm', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (5, NULL, N'campsite', N'(n) địa điểm cắm trại', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (6, NULL, N'obey', N'v. /o''bei/ vâng lời, tuân theo, tuân lệnh', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (8, NULL, N'incentive', N'
+(adj,n) khuyến khích', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (9, NULL, N'solve', N'(v) giải quyết, tháo gỡ (vấn đề)', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (10, NULL, N'prey', N'(n) con mồi (v) săn mồi', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (11, NULL, N'obstacles', N'(n) vật cản', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (12, NULL, N'simply', N'(adv) một cách dễ dàng, giản dị
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (13, NULL, N'daytime', N'n. ban ngày', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (14, NULL, N'heavily', N'adv. /´hevili/ nặng, nặng nề
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (16, NULL, N'exploit', N'(v) khai thác, bóc lột', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (17, NULL, N'creature', N'(n) sinh vật, loài vật', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (18, NULL, N'alternative', N'(n) sự lựa chọn (một trong hai); phương án thay thế', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (19, NULL, N'thoroughly', N'(adv) kỹ lưỡng, thấu đáo, triệt để
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (20, NULL, N'probable', N'(adj) có thể', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (21, NULL, N'nocturnal', N'(adj) về đêm', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (22, NULL, N'dictator', N'(n) kẻ độc tài', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (23, NULL, N'probable for something', N'ng hoặc cái rất có thể dc chọn
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (24, NULL, N'dominated', N'(v) thống trị chiếm ưu thế
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (25, NULL, N'ancestry', N'(n) tổ tiên, dòng họ
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (26, NULL, N'mammal
+', N'(n) loài thú, loài động vật có vú
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (27, NULL, N'scraping', N'
+(n) sự nạo', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (28, NULL, N'Extinction', N'(n) sự dập tắt ,thanh toán', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (29, NULL, N'substantial', N'(adj) giàu có, có tài sản, quan trọng, có giá trị lớn.', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (30, NULL, N'ancestor
+', N'(n) ông bà, tổ tiên
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (31, NULL, N'absence', N'n. /''æbsəns/ sự vắng mặt', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (32, NULL, N'obuously', N'(adj) rõ ràng hiển nhiên
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (33, NULL, N'muddy', N'(adj) lấm bùn, xám xịt, mập mờ
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (34, NULL, N'scatler', N'(n,v) rải rắc
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (35, NULL, N'condisions', N'(n) điều kiện địa vị hoàn cảnh
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (36, NULL, N'plenty
+', N'(pron, adv, n, det) nhiều (s.k.lượng); chỉ sự thừa; sự sung túc, sự p.phú
+
+', 1)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (37, NULL, N'achievement', N'(n)thành tích, thành tựu', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (38, NULL, N'Acid', N'(n) axit', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (39, NULL, N'acknowledge', N'(v) công nhận, thừa nhận
+
+', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (40, NULL, N'acquire', N'(v) đạt được, giành được, thu được, kiếm được', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (41, NULL, N'across', N'(adv)qua, ngang qua
+
+', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (42, NULL, N'act', N'(n) (v) hành động, hành vi, cử chỉ, đối xử', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (43, NULL, N'action', N'(n) hành động; quá trình diễn biến (của vợ kịch', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (44, NULL, N'take action
+', N'
+hành động', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (45, NULL, N'active', N'(adj)tích cực hoạt động, nhanh nhẹn
+
+', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (46, NULL, N'actively', N'(adv)tích cực hoạt động, nhanh nhẹn
+
+', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (47, NULL, N'actor/actress
+', N'(n)diễn viên
+
+', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (48, NULL, N'actual', N'(adj) thực tế, có thật', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (49, NULL, N'actually', N'(adv) hiện nay, hiện tại', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (50, NULL, N'advertisement
+', N'quảng cáo
+
+', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (51, NULL, N'adapt', N'(v) tra, lắp vào', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (52, NULL, N'add', N'(v)cộng, thêm vàoq', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (53, NULL, N'addition
+', N'
+(n)phép cộng', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (54, NULL, N'in addition
+', N'
+(to)thêm vào', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (55, NULL, N'additional
+', N'
+(to)thêm vào', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (56, NULL, N'additional', N'
+(adj) thêm vào, tăng thêm', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (57, NULL, N'address', N'
+(n, v) địa chỉ, đề địa chỉ', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (58, NULL, N'adequate', N'(adj) đầy, đầy đủ', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (59, NULL, N'adequately', N'(adv) tương xứng, thỏa đáng', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (60, NULL, N'adjust', N'
+(v) sửa lại cho đúng, điều chỉnh', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (61, NULL, N'admiration', N'
+(n) sự khâm phục,người kp, thán phục', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (62, NULL, N'admire
+', N'
+(v)khâm phục, thán phục', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (63, NULL, N'admit', N't
+(v) cho vào, nhận vào', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (64, NULL, N'adopt', N'
+(v) nhận làm con nuôi', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (65, NULL, N'adult', N'
+(n adj) người lớn, người trưởng thành; trưởng thành', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (66, NULL, N'advance', N'(n) sự tiến bộ
+
+', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (67, NULL, N'advanced', N'
+(adj) tiên tiến, tiến bộ, cấp cao', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (68, NULL, N'in advance
+', N'
+trước, sớm', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (69, NULL, N'advantage', N'
+(n)sự thuận lợi, lợi ích, lợi thế', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (70, NULL, N'take advantage of', N'
+lợi dụng', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (71, NULL, N'adventure', N'
+(n) sự phiêu lưu, mạo hiểm', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (72, NULL, N'advertise', N'(v) báo cho biết, báo cho biết trước', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (73, NULL, N'Advertising', N'
+(n) sự quảng cáo, nghề quảng cáo', 2)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (74, NULL, N'Mot', N'1', 8)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (75, NULL, N'Hai', N'2', 8)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (76, NULL, N'Ba', N'3', 8)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (77, N'number1', N'Mot', N'1', 11)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (78, N'number1', N'Hai', N'2', 11)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (79, N'number1', N'Ba', N'3', 11)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (99, NULL, N'Mot', N'1', 12)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (100, NULL, N'Hai', N'2', 12)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (101, NULL, N'Ba', N'3', 12)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (106, NULL, N'Mot', N'1', 13)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (107, NULL, N'Hai', N'2', 13)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (108, NULL, N'Ba', N'3', 13)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (111, NULL, N'Mot', N'1', 14)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (112, NULL, N'Hai', N'2', 14)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (113, NULL, N'Ba', N'3', 14)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (114, NULL, N'bon', N'4', 14)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (115, NULL, N'nam', N'5', 14)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (116, NULL, N'sau', N'6', 14)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (117, NULL, N'bay', N'7', 14)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (118, N'111 update 2', N'Mot', N'1', 9)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (119, N'111 update 2', N'Hai', N'2', 9)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (120, N'111 update 2', N'Ba', N'3', 9)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (121, NULL, N'bon', N'4', 9)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (122, NULL, N'Mot', N'1', 15)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (123, NULL, N'Hai', N'2', 15)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (124, NULL, N'Ba', N'3', 15)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (125, NULL, N'bon', N'4', 15)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (126, NULL, N'nam', N'5', 15)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (127, NULL, N'sau', N'6', 15)
+GO
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (128, NULL, N'bay', N'7', 15)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (129, NULL, N'tam', N'8', 15)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (130, NULL, N'chin', N'9', 15)
+INSERT [dbo].[Question] ([questionid], [image], [term], [definition], [courseid]) VALUES (131, NULL, N'Mot', N'1', 10)
+SET IDENTITY_INSERT [dbo].[Question] OFF
+SET IDENTITY_INSERT [dbo].[VerifyToken] ON 
+
+INSERT [dbo].[VerifyToken] ([ID], [Email], [Token], [Create_Time]) VALUES (3, N'asuyami0nagi@gmail.com', N'KBNHVnztLpqyZD00VVkEFjf0ctV0TfFZrkiFqwyGdA5N9LwfBV.YXN1eWFtaTBuYWdpQGdtYWlsLmNvbQ==', CAST(N'2022-03-21T00:12:30.667' AS DateTime))
+INSERT [dbo].[VerifyToken] ([ID], [Email], [Token], [Create_Time]) VALUES (4, N'bearerjb@gmail.com', N'hTv4e6rgMx7BVo2oqg38Sz6NTXwnC2a1bBtQEv5tQwdBRZfcI0.YmVhcmVyamJAZ21haWwuY29t', CAST(N'2022-03-21T02:54:30.790' AS DateTime))
+SET IDENTITY_INSERT [dbo].[VerifyToken] OFF
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Account__F20699F7280C4DF8]    Script Date: 21-Mar-22 22:53:10 ******/
+ALTER TABLE [dbo].[Account] ADD UNIQUE NONCLUSTERED 
+(
+	[accountid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Account__F20699F751D28077]    Script Date: 21-Mar-22 22:53:10 ******/
+ALTER TABLE [dbo].[Account] ADD UNIQUE NONCLUSTERED 
+(
+	[accountid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Account__F20699F7B499DC78]    Script Date: 21-Mar-22 22:53:10 ******/
+ALTER TABLE [dbo].[Account] ADD UNIQUE NONCLUSTERED 
+(
+	[accountid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Account__F20699F7DF240871]    Script Date: 21-Mar-22 22:53:10 ******/
+ALTER TABLE [dbo].[Account] ADD UNIQUE NONCLUSTERED 
+(
+	[accountid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [UQ__Course__2AAB4BC87AD8D110]    Script Date: 21-Mar-22 22:53:10 ******/
+ALTER TABLE [dbo].[Course] ADD UNIQUE NONCLUSTERED 
+(
+	[courseid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [UQ__Course__2AAB4BC8B937F1B2]    Script Date: 21-Mar-22 22:53:10 ******/
+ALTER TABLE [dbo].[Course] ADD UNIQUE NONCLUSTERED 
+(
+	[courseid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [UQ__Course__2AAB4BC8D0D4EBEE]    Script Date: 21-Mar-22 22:53:10 ******/
+ALTER TABLE [dbo].[Course] ADD UNIQUE NONCLUSTERED 
+(
+	[courseid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [UQ__Course__2AAB4BC8F04416A9]    Script Date: 21-Mar-22 22:53:10 ******/
+ALTER TABLE [dbo].[Course] ADD UNIQUE NONCLUSTERED 
+(
+	[courseid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [UQ__Progress__0F2CD854EF0E2D28]    Script Date: 21-Mar-22 22:53:10 ******/
+ALTER TABLE [dbo].[Progress] ADD  CONSTRAINT [UQ__Progress__0F2CD854EF0E2D28] UNIQUE NONCLUSTERED 
+(
+	[progressid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [UQ__Question__62C2216B8954D39B]    Script Date: 21-Mar-22 22:53:10 ******/
+ALTER TABLE [dbo].[Question] ADD  CONSTRAINT [UQ__Question__62C2216B8954D39B] UNIQUE NONCLUSTERED 
+(
+	[questionid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[VerifyToken] ADD  CONSTRAINT [DF_VerifyToken_Create_Time]  DEFAULT (getdate()) FOR [Create_Time]
+GO
+ALTER TABLE [dbo].[Progress]  WITH CHECK ADD  CONSTRAINT [FK__Progress__questi__300424B4] FOREIGN KEY([questionid])
+REFERENCES [dbo].[Question] ([questionid])
+GO
+ALTER TABLE [dbo].[Progress] CHECK CONSTRAINT [FK__Progress__questi__300424B4]
+GO
+ALTER TABLE [dbo].[ProgressAccount]  WITH CHECK ADD  CONSTRAINT [FK__ProgressA__progr__31EC6D26] FOREIGN KEY([progressid])
+REFERENCES [dbo].[Progress] ([progressid])
+GO
+ALTER TABLE [dbo].[ProgressAccount] CHECK CONSTRAINT [FK__ProgressA__progr__31EC6D26]
+GO
+ALTER TABLE [dbo].[Question]  WITH CHECK ADD  CONSTRAINT [FK__Question__course__32E0915F] FOREIGN KEY([courseid])
+REFERENCES [dbo].[Course] ([courseid])
+GO
+ALTER TABLE [dbo].[Question] CHECK CONSTRAINT [FK__Question__course__32E0915F]
+GO
+USE [master]
+GO
+ALTER DATABASE [PRJ301Final_Test] SET  READ_WRITE 
+GO
 
