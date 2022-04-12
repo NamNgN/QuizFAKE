@@ -1,0 +1,42 @@
+
+div .item{
+ height: 100%;
+
+}
+.container-fluid{
+    padding: 0 ;
+}
+
+
+
+.row h1{
+    text-align: center;
+}
+.row h2{
+    color: blue;
+    font-size: 17px;
+    text-align: center;
+}
+.row p{
+    color: black;
+    text-align: center;
+}
+
+.footer{
+    background-color:gray;
+}
+.footer ul li {
+    list-style: none;
+    margin-top: 10px;
+    color:grey;
+    
+}
+.footer ul li a{
+    color:whitesmoke;  
+}
+.footer p {
+    color: whitesmoke;
+    text-align: left;
+    height: 80px;
+}
+

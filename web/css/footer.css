@@ -1,0 +1,33 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jul 6, 2021, 12:55:30 AM
+    Author     : WacMac
+*/
+
+footer.nb-footer {
+    /*position:absolute;*/
+    width:100%;
+    background: #222;
+    border-top: 4px solid #b78c33; 
+    /*bottom: 0*/
+}
+footer.nb-footer .about p {
+    font-size: 13px;
+    color: #999;
+    margin-top: 30px; 
+}
+footer.nb-footer .copyright {
+    margin-top: 15px;
+    background: #111;
+    padding: 7px 0;
+    color: #999; 
+}
+footer.nb-footer .copyright p {
+    margin: 0;
+    padding: 0; 
+}
+
